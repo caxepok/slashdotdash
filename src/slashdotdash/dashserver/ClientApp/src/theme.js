@@ -1,0 +1,51 @@
+import { css } from "styled-components";
+
+class CSSUnit {
+  constructor(value, unit = "px") {
+    this.val = value;
+    this.unit = unit;
+  }
+
+  valueOf() {
+    return this.val;
+  }
+
+  toString() {
+    return `${this.val}${this.unit}`;
+  }
+}
+
+const theme = {
+  colors: {
+    background: "#F2F2F2",
+    accent: "#843FB5",
+    primary: "#222222",
+    secondary: "#666",
+  },
+  typography: {
+    fontSize: new CSSUnit(14),
+    lineHeight: new CSSUnit(18),
+    title: {
+      h3: css`
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 700;
+      `,
+    },
+  },
+  borderRadius: {
+    card: new CSSUnit(12),
+  },
+  spacing: {
+    medium: new CSSUnit(8),
+    large: new CSSUnit(12),
+    xlarge: new CSSUnit(16),
+  },
+  shadows: {
+    card: "0 1px 10px -4px #00000019",
+    cardHover: "0 5px 14px -6px #0000004C",
+    cardActive: "0 0 0 1px #0000000A",
+  },
+};
+
+export default theme;

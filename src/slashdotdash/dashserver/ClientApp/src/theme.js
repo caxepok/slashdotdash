@@ -27,8 +27,8 @@ const theme = {
     lineHeight: new CSSUnit(18),
     title: {
       h3: css`
-        font-size: 20px;
-        line-height: 24px;
+        font-size: 18px;
+        line-height: 22px;
         font-weight: 700;
       `,
     },

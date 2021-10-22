@@ -1,8 +1,6 @@
 import * as dataApi from "../services/data";
 
-const initialState = {
-  data: null,
-};
+const initialState = {};
 
 const SET_DATA = "main/SET_DATA";
 

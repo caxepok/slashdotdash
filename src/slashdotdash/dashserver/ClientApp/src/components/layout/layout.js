@@ -5,12 +5,13 @@ import { NavLink } from "react-router-dom";
 
 const Card = React.memo(
   React.forwardRef((props, ref) => {
-    const { title, children } = props;
+    const { title, children, placeholder } = props;
 
     return (
       <Markup.Wrapper ref={ref}>
         {title && <Markup.Title>{title}</Markup.Title>}
         <Markup.Content>{children}</Markup.Content>
+        {placeholder && <Markup.Placeholder>{placeholder}</Markup.Placeholder>}
       </Markup.Wrapper>
     );
   }),

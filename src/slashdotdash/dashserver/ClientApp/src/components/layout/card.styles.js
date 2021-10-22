@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
   text-decoration: none;
   color: ${(p) => p.theme.colors.secondary};
   transition: box-shadow 0.1s, transform 0.1s;
+  position: relative;
 
   a&:hover {
     box-shadow: ${(p) => p.theme.shadows.cardHover};
@@ -33,4 +34,18 @@ export const Title = styled.h3`
 
 export const Content = styled.div`
   flex-basis: 100%;
+  display: flex;
+`;
+
+export const Placeholder = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff66;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${(p) => p.theme.borderRadius.card};
 `;

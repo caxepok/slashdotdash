@@ -11,10 +11,12 @@ export const Dashboard = React.memo(() => {
 
   return (
     <Layout.Column sizes={[1, 2, 1]}>
-      <Layout.Row count={4}>
+      <Layout.Row sizes={[1, 2, 1]}>
         <DashboardItem type={0} as={Chart} />
-        <DashboardItem type={1} as={Chart} />
-        <DashboardItem type={2} as={Chart} />
+        <Layout.Row count={2}>
+          <DashboardItem type={1} as={Chart} />
+          <DashboardItem type={2} as={Chart} />
+        </Layout.Row>
         <DashboardItem type={3} as={Chart} />
       </Layout.Row>
       <Layout.Row sizes={[1, 2, 1]}>

@@ -14,7 +14,7 @@ export const DashboardItem = React.memo((props) => {
   }, [data]);
 
   if (!data) {
-    return <Layout.Card>Loading</Layout.Card>;
+    return <Layout.Card placeholder={data === null ? "Ошибка загрузки" : "Загрузка"} />;
   }
 
   return (

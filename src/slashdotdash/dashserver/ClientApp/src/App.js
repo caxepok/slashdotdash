@@ -1,12 +1,14 @@
 import React from "react";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import dashboardReducer from "./reducers/dashboard";
 import thunk from "redux-thunk";
 import { Dashboard } from "./pages/dashboard";
 import theme from "./theme";
 import { Layout } from "./components";
+import { Shops } from "./pages/shops/shops";
 
 function App() {
   const composeEnhancers =
@@ -22,9 +24,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <Layout>
-          <Dashboard />
-        </Layout>
+        <Router>
+          <Layout>
+            <Switch>
+              <Route path={"*/shops"} component={Shops} />
+              <Dashboard />
+            </Switch>
+          </Layout>
+        </Router>
       </Provider>
     </ThemeProvider>
   );

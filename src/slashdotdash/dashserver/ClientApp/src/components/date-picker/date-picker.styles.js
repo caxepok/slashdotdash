@@ -8,4 +8,5 @@ export const Wrapper = styled.span`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-bottom: 1px solid ${(p) => p.theme.colors.accent}66;
 `;

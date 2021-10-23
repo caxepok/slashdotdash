@@ -1,11 +1,11 @@
 export const colors = {
-  success: "green",
+  success: "#67AE19",
   warning: "yellow",
-  danger: "red",
+  danger: "#EB3216",
 };
 
 export const chartTypes = {
-  orderFailures: 16,
+  orderFailures: "FailedOrders",
   quotaFill: "QuotaFill",
   planning: {
     resourceWorkload: "ResourceWorkload",

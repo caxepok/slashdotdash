@@ -1,17 +1,33 @@
 import * as dataApi from "../services/data";
 
-const initialState = {};
+const initialState = {
+  date: new Date("2021-10-07T00:00:00"),
+};
 
-const SET_DATA = "main/SET_DATA";
+const SET_DATA = "dashboard/SET_DATA";
+const SET_DATE = "dashboard/SET_DATE";
+const SET_SHOP_DATA = "dashboard/SET_SHOP_DATA";
 
-const mainReducer = (state = initialState, action) => {
+const dashboardReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_DATA:
-      console.log(action.data);
       return {
         ...state,
         data: action.data,
       };
+
+    case SET_DATE:
+      return {
+        ...state,
+        date: action.date,
+      };
+
+    case SET_SHOP_DATA: {
+      return {
+        ...state,
+        shopData: action.data,
+      };
+    }
 
     default: {
       return state;
@@ -19,11 +35,9 @@ const mainReducer = (state = initialState, action) => {
   }
 };
 
-const setData = (data) => ({
-  type: SET_DATA,
-  data,
-});
+export const loadData = () => async (dispatch) => dispatch({ type: SET_DATA, data: await dataApi.fetchData() });
+export const loadShopData = (date) => async (dispatch) =>
+  dispatch({ type: SET_SHOP_DATA, data: await dataApi.fetchShopData(date) });
+export const setDate = (date) => ({ type: SET_DATE, date });
 
-export const fetchData = () => async (dispatch) => dispatch(setData(await dataApi.fetchData()));
-
-export default mainReducer;
+export default dashboardReducer;

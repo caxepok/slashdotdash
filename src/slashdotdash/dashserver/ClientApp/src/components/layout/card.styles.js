@@ -28,6 +28,7 @@ export const Wrapper = styled.div`
 
 export const Title = styled.h3`
   margin: -2px 0 0 0;
+  text-align: center;
   ${(p) => p.theme.typography.title.h3};
   color: ${(p) => p.theme.colors.primary};
 `;

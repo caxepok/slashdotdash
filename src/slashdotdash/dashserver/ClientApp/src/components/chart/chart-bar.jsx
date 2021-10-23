@@ -1,26 +1,29 @@
-import React, { useCallback } from "react";
-import { AutoSizer } from "react-virtualized";
-import { HorizontalBarSeries, LineSeries, VerticalBarSeries, XYPlot } from "react-vis";
-import { useTheme } from "styled-components";
-import format from "date-fns/format";
-import { useChartLine } from "./chart.hooks";
+import React, { useMemo } from "react";
 import * as Markup from "./chart.styles";
+import { ChartHorizontalGrid } from "./chart-horizontal-grid";
 
 export const ChartBar = React.memo((props) => {
-  const { colors } = useTheme();
-  const [data, threshold, limits] = useChartLine(props);
-
+  const { values, threshold } = props;
+  const legends = useMemo(() => (values ? values.map((item) => item.name) : []), [values]);
   return (
-    <AutoSizer>
-      {(size) => (
-        <Markup.Chart>
-          <XYPlot {...size} margin={{ left: 0, top: 0, right: 0, bottom: 0 }}>
-            <LineSeries data={limits} color={"transparent"} />
-            <LineSeries data={threshold} color={"#FF0000"} style={{ strokeWidth: 1, strokeDasharray: 2 }} />
-            <VerticalBarSeries data={data} color={colors.accent} />
-          </XYPlot>
-        </Markup.Chart>
-      )}
-    </AutoSizer>
+    <Markup.Wrapper>
+      <Markup.Chart threshold={threshold}>
+        <ChartHorizontalGrid />
+        <Markup.Bars>
+          {values &&
+            values.map((item, key) => (
+              <Markup.Bar key={key} value={item.value} type={item.value >= threshold ? "success" : "danger"}>
+                <span>{item.value.toFixed(1)}%</span>
+              </Markup.Bar>
+            ))}
+        </Markup.Bars>
+      </Markup.Chart>
+
+      <Markup.Legend>
+        {legends.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+      </Markup.Legend>
+    </Markup.Wrapper>
   );
 });

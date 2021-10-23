@@ -22,11 +22,17 @@ const theme = {
     primary: "#222222",
     secondary: "#666",
     tertiary: "#999",
+    quarternary: "#CCC",
   },
   typography: {
     fontSize: new CSSUnit(14),
     lineHeight: new CSSUnit(18),
     title: {
+      h2: css`
+        font-size: 22px;
+        line-height: 26px;
+        font-weight: 700;
+      `,
       h3: css`
         font-size: 18px;
         line-height: 22px;
@@ -45,7 +51,7 @@ const theme = {
   spacing: {
     medium: new CSSUnit(8),
     large: new CSSUnit(12),
-    xlarge: new CSSUnit(16),
+    xlarge: new CSSUnit(20),
   },
   shadows: {
     card: "0 1px 10px -4px #00000019",

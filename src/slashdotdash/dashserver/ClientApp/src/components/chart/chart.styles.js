@@ -174,6 +174,7 @@ export const Dates = styled.div`
   margin: 0 10px;
   min-height: 20px;
   justify-content: flex-end;
+  flex-direction: row-reverse;
   overflow: hidden;
 
   > span {

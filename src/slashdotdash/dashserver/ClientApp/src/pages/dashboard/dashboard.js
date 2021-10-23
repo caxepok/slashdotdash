@@ -12,20 +12,18 @@ export const Dashboard = React.memo(() => {
 
   return (
     <Layout.Column count={3}>
-      <Layout.Row sizes={[1, 1, 1, 2]}>
+      <Layout.Row sizes={[1, 1, 3]}>
         <Layout.Card title="Прием заказов">
           <DashboardSummary type={chartTypes.orderFailures} />
         </Layout.Card>
         <Layout.Card title="Управление квотами">
           <DashboardSummary type={chartTypes.quotaFill} />
         </Layout.Card>
-        <Layout.Card title="Комбинирование заказов">
-          <DashboardSummary type={chartTypes.combinations} />
-        </Layout.Card>
-        <Layout.Card title="Графикование конвертеров">
-          <Layout.Row count={2}>
-            <DashboardSummary type={chartTypes.converter.series} />
-            <DashboardSummary type={chartTypes.converter.planFollowing} />
+        <Layout.Card title="Составление сменно-суточных заданий">
+          <Layout.Row count={3}>
+            <DashboardSummary type={chartTypes.daily.tasks} />
+            <DashboardSummary type={chartTypes.daily.tasksReserves} />
+            <DashboardSummary type={chartTypes.daily.tasksContourSystem} />
           </Layout.Row>
         </Layout.Card>
       </Layout.Row>
@@ -36,7 +34,7 @@ export const Dashboard = React.memo(() => {
         <DashboardSummary type={chartTypes.planning.companyLoads} />
         <DashboardSummary type={chartTypes.planning.hot} />
       </Layout.Card>
-      <Layout.Row count={2}>
+      <Layout.Row sizes={[3, 1, 2]}>
         <Layout.Card title="Графикование горячих цехов">
           <Layout.Row count={3}>
             <DashboardSummary type={chartTypes.hotShop.montage} />
@@ -44,11 +42,13 @@ export const Dashboard = React.memo(() => {
             <DashboardSummary type={chartTypes.hotShop.reserve} />
           </Layout.Row>
         </Layout.Card>
-        <Layout.Card title="Составление сменно-суточных заданий">
-          <Layout.Row count={3}>
-            <DashboardSummary type={chartTypes.daily.tasks} />
-            <DashboardSummary type={chartTypes.daily.tasksReserves} />
-            <DashboardSummary type={chartTypes.daily.tasksContourSystem} />
+        <Layout.Card title="Комбинирование заказов">
+          <DashboardSummary type={chartTypes.combinations} />
+        </Layout.Card>
+        <Layout.Card title="Графикование конвертеров">
+          <Layout.Row count={2}>
+            <DashboardSummary type={chartTypes.converter.series} />
+            <DashboardSummary type={chartTypes.converter.planFollowing} />
           </Layout.Row>
         </Layout.Card>
       </Layout.Row>

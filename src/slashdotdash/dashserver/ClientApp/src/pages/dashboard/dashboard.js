@@ -1,46 +1,45 @@
 import React, { useEffect } from "react";
 import { Layout } from "../../components";
-import { Chart } from "../../components/chart";
+import { ChartLine } from "../../components/chart";
+import { DatePicker } from "../../components/date-picker";
 import { useDispatch } from "react-redux";
 import { fetchData } from "../../reducers/dashboard";
 import { DashboardItem } from "../../components/dashboard-item";
+import { chartTypes } from "../../consts";
 
 export const Dashboard = React.memo(() => {
   const dispatch = useDispatch();
   useEffect(() => dispatch(fetchData()), [dispatch]);
 
   return (
-    <Layout.Column sizes={[1, 2, 1]}>
-      <Layout.Row sizes={[1, 2, 1]}>
-        <DashboardItem type={0} as={Chart} />
-        <Layout.Row count={2}>
-          <DashboardItem type={1} as={Chart} />
-          <DashboardItem type={2} as={Chart} />
-        </Layout.Row>
-        <DashboardItem type={3} as={Chart} />
-      </Layout.Row>
-      <Layout.Row sizes={[1, 2, 1]}>
-        <Layout.Column count={3}>
+    <Layout.Column sizes={[5, 2, 3]}>
+      <Layout.Row sizes={[2, 3, 4]}>
+        <Layout.Column sizes={["53px", 1]}>
+          <Layout.Card>
+            <DatePicker />
+          </Layout.Card>
+          <Layout.Card>
+            <Layout.Column count={2}>
+              <DashboardItem type={chartTypes.orderFailures} as={ChartLine} />
+              <DashboardItem type={chartTypes.quotaFill} as={ChartLine} />
+            </Layout.Column>
+          </Layout.Card>
+        </Layout.Column>
+        <Layout.Card>
           <Layout.Row count={2}>
-            <DashboardItem type={4} as={Chart} />
-            <DashboardItem type={5} as={Chart} />
+            <Layout.Column sizes={[2, 1]}>
+              <DashboardItem type={chartTypes.planning.plannedOTIF} as={ChartLine} />
+              <DashboardItem type={chartTypes.planning.companyLoads} as={ChartLine} />
+            </Layout.Column>
+            <Layout.Column sizes={[1, 2]}>
+              <DashboardItem type={chartTypes.planning.storageFailures} as={ChartLine} />
+              <DashboardItem type={chartTypes.planning.hot} as={ChartLine} />
+            </Layout.Column>
           </Layout.Row>
-          <DashboardItem type={6} as={Chart} />
-          <DashboardItem type={7} as={Chart} />
-        </Layout.Column>
-        <DashboardItem type={8} as={Chart} />
-        <Layout.Column count={2}>
-          <DashboardItem type={9} as={Chart} />
-          <DashboardItem type={10} as={Chart} />
-        </Layout.Column>
-      </Layout.Row>
-
-      <Layout.Row count={5}>
-        <DashboardItem type={11} as={Chart} />
-        <DashboardItem type={12} as={Chart} />
-        <DashboardItem type={13} as={Chart} />
-        <DashboardItem type={14} as={Chart} />
-        <DashboardItem type={15} as={Chart} />
+        </Layout.Card>
+        <Layout.Card>
+          <DashboardItem type={chartTypes.combinations} as={ChartLine} />
+        </Layout.Card>
       </Layout.Row>
     </Layout.Column>
   );

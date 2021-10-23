@@ -32,15 +32,23 @@ const NavCard = React.memo(
 
 const Row = styled.div`
   display: grid;
+  flex-basis: 100%;
   gap: ${(p) => p.theme.spacing.xlarge};
   grid-template-columns: ${(p) =>
-    (p.sizes ? p.sizes.map((s) => `${s}fr`) : [...new Array(p.count || 1)].map((_) => "1fr")).join(" ")};
+    (p.sizes
+      ? p.sizes.map((s) => (typeof s === "number" ? `${s}fr` : s))
+      : [...new Array(p.count || 1)].map((_) => "1fr")
+    ).join(" ")};
 `;
 
 const Column = styled.div`
   display: grid;
+  flex-basis: 100%;
   grid-template-rows: ${(p) =>
-    (p.sizes ? p.sizes.map((s) => `${s}fr`) : [...new Array(p.count || 1)].map((_) => "1fr")).join(" ")};
+    (p.sizes
+      ? p.sizes.map((s) => (typeof s === "number" ? `${s}fr` : s))
+      : [...new Array(p.count || 1)].map((_) => "1fr")
+    ).join(" ")};
   gap: ${(p) => p.theme.spacing.xlarge};
 `;
 

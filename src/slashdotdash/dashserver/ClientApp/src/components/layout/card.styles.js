@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-  gap: ${(p) => p.theme.spacing.large};
+  gap: ${(p) => p.theme.spacing.xlarge};
   box-shadow: ${(p) => p.theme.shadows.card};
   text-decoration: none;
   color: ${(p) => p.theme.colors.secondary};

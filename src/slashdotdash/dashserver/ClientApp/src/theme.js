@@ -21,6 +21,7 @@ const theme = {
     accent: "#843FB5",
     primary: "#222222",
     secondary: "#666",
+    tertiary: "#999",
   },
   typography: {
     fontSize: new CSSUnit(14),
@@ -29,6 +30,11 @@ const theme = {
       h3: css`
         font-size: 18px;
         line-height: 22px;
+        font-weight: 700;
+      `,
+      h4: css`
+        font-size: 14px;
+        line-height: 16px;
         font-weight: 700;
       `,
     },

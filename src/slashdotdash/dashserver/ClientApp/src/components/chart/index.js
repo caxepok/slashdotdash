@@ -1,1 +1,2 @@
-export { Chart } from "./chart";
+export { ChartLine } from "./chart-line";
+export { ChartBar } from "./chart-bar";

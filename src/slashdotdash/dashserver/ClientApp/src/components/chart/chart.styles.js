@@ -1,9 +1,24 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Chart = styled.span`
   display: block;
-  margin-left: -15px;
-  margin-bottom: -20px;
+  flex-basis: 100%;
+  width: 100%;
+  margin: 10px 5px;
+
+  ${(p) =>
+    p.threshold &&
+    css`
+      &:before {
+        position: absolute;
+        content: "";
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: ${p.threshold}%;
+        border-top: 1px dashed #cc0000aa;
+      }
+    `}
 
   svg {
     text {

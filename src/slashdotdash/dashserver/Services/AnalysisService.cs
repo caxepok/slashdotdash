@@ -332,6 +332,36 @@ namespace dashserver.Services
             return shopCompares;
         }
 
+        public IEnumerable<StockSummaryItem> GetStockSummary(Plan plan)
+        {
+            List<StockSummaryItem> results = new();
+            foreach (var stock in _dashDBContext.Stocks.ToList())
+            {
+                List<ValueOnDate> perDay = new();
+                var stockSummaryItem = new StockSummaryItem()
+                {
+                    StockCode = stock.Code,
+                    StockName = stock.Name,
+                    Values = perDay
+                };
+                // заполним склады по дням
+                var stockBalances = _dashDBContext.StockBalances
+                    .Where(_ => _.StockId == stock.Id && _.Date <= plan.Date.AddDays(14))
+                    .OrderBy(_ => _.Date);
+                foreach (var stockBalance in stockBalances)
+                {
+                    decimal percent;
+                    if (stockBalance.MaxBalance == 0)
+                        percent = 0;
+                    else
+                        percent = Math.Abs(stockBalance.PlannedBalance / stockBalance.MaxBalance * 100);
+                    perDay.Add(new ValueOnDate(stockBalance.Date, percent));
+                }
+                results.Add(stockSummaryItem);
+            }
+            return results;
+        }
+
         /// <summary>
         /// Анализ цепочек складов ресурсной группы
         /// </summary>
@@ -364,8 +394,28 @@ namespace dashserver.Services
                         warnings.Add(chainCheckResult);
                 }
             }
-            // todo: проверим равномерность загрузки агрегатов
-
+            // проверим равномерность загрузки агрегатов
+            var resources = nodesRg.Single(_ => _.Id == resourceGroupId).Childs;
+            bool unbalanced = false;
+            for (int i = 0; i < resources.Count; i++)
+            {
+                for (int j = resources.Count + 1; j < resources.Count; j++)
+                {
+                    var resource1 = resources[i].Values.Single(_ => _.Date == date).Value;
+                    var resource2 = resources[j].Values.Single(_ => _.Date == date).Value;
+                    if (resource1 > resource2 &&
+                        resource1 != 0 &&
+                        resource2 / resource1 * 100 > 20)
+                    {
+                        unbalanced = true;
+                        break;
+                    }
+                }
+                if (unbalanced)
+                    break;
+            }
+            if (unbalanced)
+                warnings.Add("Агрегаты внутри группы загруженны неравномерно");
 
             if (!warnings.Any())
                 return null;

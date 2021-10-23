@@ -176,12 +176,12 @@ export const Dates = styled.div`
   justify-content: flex-end;
   flex-direction: row-reverse;
   overflow: hidden;
+  font-size: 11px;
+  color: ${(p) => p.theme.colors.tertiary};
 
   > span {
-    color: ${(p) => p.theme.colors.secondary};
     display: flex;
     flex-basis: 100%;
-    font-size: 11px;
     min-height: 20px;
     align-items: center;
     justify-content: flex-start;

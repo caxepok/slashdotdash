@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   position: fixed;
   border-radius: ${(p) => p.theme.borderRadius.card};
   box-shadow: ${(p) => p.theme.shadows.cardHover}, 0 0 0 1px ${(p) => p.theme.colors.quarternary}66;
-  padding: ${(p) => p.theme.spacing.xlarge};
+  padding: ${(p) => (p.isFixed ? p.theme.spacing.large : p.theme.spacing.medium)};
   gap: ${(p) => p.theme.spacing.large};
   display: flex;
   flex-direction: column;
@@ -12,8 +12,11 @@ export const Wrapper = styled.div`
   background: #ffffff;
   z-index: ${(p) => (p.isFixed ? 101 : 100)};
   opacity: 0;
-  transition: opacity 0.1s;
+  transition: opacity 0.1s, width 0.2s, height 0.2s, padding 0.2s;
   user-select: none;
+  transform: translate(-50%, -50%);
+  width: ${(p) => (p.isFixed ? 400 : 200)}px;
+  height: ${(p) => (p.isFixed ? 280 : 180)}px;
 
   &:focus {
     z-index: 102;
@@ -21,14 +24,13 @@ export const Wrapper = styled.div`
 `;
 
 export const Header = styled.div`
-  display: flex;
   ${(p) => p.theme.typography.title.h4};
-  max-width: 100%;
   padding-right: 40px;
+  display: flex;
   align-items: center;
-  width: 400px;
-  height: 40px;
-  margin-top: -10px;
+  min-height: 40px;
+  margin-top: ${(p) => (p.isFixed ? -5 : -40)}px;
+  opacity: ${(p) => (p.isFixed ? 1 : 0)};
 `;
 
 export const Button = styled.div`
@@ -40,18 +42,14 @@ export const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  fill: ${(p) => (p.isFixed ? "#FFFFFF" : p.theme.colors.accent)};
-  background: ${(p) => (p.isFixed ? p.theme.colors.accent : `${p.theme.colors.quarternary}44`)};
+  color: ${(p) => p.theme.colors.secondary};
   border-radius: 3px;
   cursor: pointer;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 30px;
 
   &:hover {
-    fill: ${(p) => (p.isFixed ? "#FFFFFF" : p.theme.colors.accent)};
-    background: ${(p) => (p.isFixed ? p.theme.colors.accent : `${p.theme.colors.quarternary}66`)};
-  }
-
-  > svg {
-    width: 24px;
-    height: 24px;
+    color: ${(p) => p.theme.colors.accent};
   }
 `;

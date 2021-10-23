@@ -21,13 +21,12 @@ export const ChartDates = React.memo((props) => {
   }, [values]);
 
   useEffect(() => {
-    if (blockRef.current && count) {
-      const width = blockRef.current.offsetWidth;
+    if (count) {
       let multiplier = 1;
-      let itemWidth = width / (count / multiplier);
+      let itemWidth = 100 / (count / multiplier);
       while (itemWidth < 30) {
         multiplier++;
-        itemWidth = width / (count / multiplier);
+        itemWidth = 100 / (count / multiplier);
       }
 
       setParams({ itemWidth, multiplier, count: Math.ceil(count / multiplier) });
@@ -38,7 +37,7 @@ export const ChartDates = React.memo((props) => {
     <Markup.Dates ref={blockRef}>
       {params &&
         [...new Array(params.count)].map((x, index) => (
-          <span key={index} style={{ maxWidth: params.itemWidth, minWidth: params.itemWidth }}>
+          <span key={index} style={{ maxWidth: `${params.itemWidth}%`, minWidth: `${params.itemWidth}%` }}>
             {format(subDays(values[values.length - 1], index * params.multiplier), "dd/MM")}
           </span>
         ))}

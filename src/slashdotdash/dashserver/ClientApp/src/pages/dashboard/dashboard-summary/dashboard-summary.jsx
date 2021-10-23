@@ -21,9 +21,7 @@ export const DashboardSummary = (props) => {
       <Markup.Content ref={triggerRef}>
         <ChartRound value={data.todayValue} color={data.color} />
         <Popup title={data.name} triggerRef={triggerRef} clickable={!to}>
-          <Markup.Popup>
-            <ChartLine {...data} />
-          </Markup.Popup>
+          <ChartLine {...data} />
         </Popup>
       </Markup.Content>
       <Markup.Title>{data.name}</Markup.Title>

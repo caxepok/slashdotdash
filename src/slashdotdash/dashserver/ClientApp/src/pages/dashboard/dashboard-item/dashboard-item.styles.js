@@ -19,7 +19,7 @@ export const Title = styled.h4`
 `;
 
 export const Content = styled.div`
-  flex-basis: 140px;
+  flex-basis: 100%;
   align-items: stretch;
   display: flex;
   flex-direction: ${(p) => (p.horizontal ? "row" : "column")};
@@ -27,8 +27,6 @@ export const Content = styled.div`
 `;
 
 export const Popup = styled.div`
-  width: 400px;
-  height: 250px;
   display: flex;
   flex-direction: column;
   gap: ${(p) => p.theme.spacing.medium};

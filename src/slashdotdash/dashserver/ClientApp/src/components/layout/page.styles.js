@@ -1,14 +1,15 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 export const Wrapper = styled.div`
   border-radius: ${(p) => p.theme.borderRadius.card};
   background: #fff;
-  padding: ${(p) => p.theme.spacing.xlarge};
+  padding: ${(p) => p.theme.spacing.xlarge * 2}px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-  gap: ${(p) => p.theme.spacing.xlarge};
+  gap: ${(p) => p.theme.spacing.xlarge * 2}px;
   box-shadow: ${(p) => p.theme.shadows.card};
   text-decoration: none;
   color: ${(p) => p.theme.colors.secondary};
@@ -16,10 +17,9 @@ export const Wrapper = styled.div`
   position: relative;
 `;
 
-export const Title = styled.h3`
-  margin: -2px 0 0 0;
+export const Title = styled.h2`
   text-align: center;
-  ${(p) => p.theme.typography.title.h3};
+  ${(p) => p.theme.typography.title.h2};
   color: ${(p) => p.theme.colors.primary};
 `;
 
@@ -28,15 +28,11 @@ export const Content = styled.div`
   display: flex;
 `;
 
-export const Placeholder = styled.div`
+export const BackButton = styled(NavLink)`
+  width: 32px;
+  height: 32px;
+  fill: ${(p) => p.theme.colors.accent};
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #ffffff66;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: ${(p) => p.theme.borderRadius.card};
+  left: ${(p) => p.theme.spacing.xlarge};
+  top: ${(p) => p.theme.spacing.xlarge};
 `;

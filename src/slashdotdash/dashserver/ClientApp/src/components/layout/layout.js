@@ -1,34 +1,37 @@
 import React from "react";
-import * as Markup from "./card.styles";
+import * as CardMarkup from "./card.styles";
+import * as PageMarkup from "./page.styles";
+import { ReactComponent as BackArrow } from "./back.svg";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
 
 const Card = React.memo(
   React.forwardRef((props, ref) => {
     const { title, children, placeholder } = props;
 
     return (
-      <Markup.Wrapper ref={ref}>
-        {title && <Markup.Title>{title}</Markup.Title>}
-        <Markup.Content>{children}</Markup.Content>
-        {placeholder && <Markup.Placeholder>{placeholder}</Markup.Placeholder>}
-      </Markup.Wrapper>
+      <CardMarkup.Wrapper ref={ref}>
+        {title && <CardMarkup.Title>{title}</CardMarkup.Title>}
+        <CardMarkup.Content>{children}</CardMarkup.Content>
+        {placeholder && <CardMarkup.Placeholder>{placeholder}</CardMarkup.Placeholder>}
+      </CardMarkup.Wrapper>
     );
   }),
 );
 
-const NavCard = React.memo(
-  React.forwardRef((props, ref) => {
-    const { title, children, ...restProps } = props;
-
-    return (
-      <Markup.Wrapper as={NavLink} ref={ref} {...restProps}>
-        {title && <Markup.Title>{title}</Markup.Title>}
-        <Markup.Content>{children}</Markup.Content>
-      </Markup.Wrapper>
-    );
-  }),
-);
+const Page = React.memo((props) => {
+  const { title, children, backTo } = props;
+  return (
+    <PageMarkup.Wrapper>
+      {backTo && (
+        <PageMarkup.BackButton to={backTo}>
+          <BackArrow />
+        </PageMarkup.BackButton>
+      )}
+      {title && <PageMarkup.Title>{title}</PageMarkup.Title>}
+      <PageMarkup.Content>{children}</PageMarkup.Content>
+    </PageMarkup.Wrapper>
+  );
+});
 
 const Row = styled.div`
   display: grid;
@@ -67,7 +70,7 @@ const Layout = styled.div`
 `;
 
 Layout.Card = Card;
-Layout.NavCard = NavCard;
+Layout.Page = Page;
 Layout.Row = Row;
 Layout.Column = Column;
 

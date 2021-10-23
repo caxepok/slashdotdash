@@ -52,6 +52,7 @@ const theme = {
     medium: new CSSUnit(8),
     large: new CSSUnit(12),
     xlarge: new CSSUnit(20),
+    xxlarge: new CSSUnit(30),
   },
   shadows: {
     card: "0 1px 10px -4px #00000019",

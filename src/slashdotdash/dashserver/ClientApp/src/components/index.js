@@ -4,3 +4,4 @@ export * from "./date-picker";
 export * from "./numbers";
 export * from "./shops";
 export * from "./plan-table";
+export * from "./popup";

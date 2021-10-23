@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { AutoSizer } from "react-virtualized";
 import { LineSeries, XYPlot } from "react-vis";
 import { useTheme } from "styled-components";
 import { useChartLine } from "./chart.hooks";
 import { ChartHorizontalGrid } from "./chart-horizontal-grid";
+import { ChartDates } from "./chart-dates";
 import * as Markup from "./chart.styles";
 
 export const ChartLine = React.memo((props) => {
   const { values, threshold } = props;
   const { colors } = useTheme();
   const [data, limits] = useChartLine(values);
+  const dates = useMemo(() => {
+    if (!data) return null;
+    return data.map((item) => item.x);
+  }, [data]);
 
   return (
     <Markup.Wrapper>
@@ -24,6 +29,7 @@ export const ChartLine = React.memo((props) => {
           )}
         </AutoSizer>
       </Markup.Chart>
+      <ChartDates values={dates} />
     </Markup.Wrapper>
   );
 });

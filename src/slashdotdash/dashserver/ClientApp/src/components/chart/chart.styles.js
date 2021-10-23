@@ -162,10 +162,27 @@ export const Legend = styled.div`
     color: ${(p) => p.theme.colors.secondary};
     display: flex;
     flex-basis: 100%;
-    text-align: center;
     font-size: 11px;
     min-height: 20px;
     align-items: center;
     justify-content: center;
+  }
+`;
+
+export const Dates = styled.div`
+  display: flex;
+  margin: 0 10px;
+  min-height: 20px;
+  justify-content: flex-end;
+  overflow: hidden;
+
+  > span {
+    color: ${(p) => p.theme.colors.secondary};
+    display: flex;
+    flex-basis: 100%;
+    font-size: 11px;
+    min-height: 20px;
+    align-items: center;
+    justify-content: flex-start;
   }
 `;

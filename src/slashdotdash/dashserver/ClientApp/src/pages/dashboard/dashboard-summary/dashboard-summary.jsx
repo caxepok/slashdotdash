@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import { ChartRound } from "../../../components";
+import { ChartLine, ChartRound, Popup } from "../../../components";
 import * as Markup from "../dashboard-item/dashboard-item.styles";
 import { colors } from "../../../consts";
 import { NavLink } from "react-router-dom";
@@ -11,6 +11,8 @@ export const DashboardSummary = (props) => {
     ({ dashboard }) => dashboard.data && dashboard.data.find((item) => item.type === type),
     shallowEqual,
   );
+
+  const triggerRef = useRef(null);
 
   const color = useMemo(() => {
     if (!data) return null;
@@ -24,8 +26,13 @@ export const DashboardSummary = (props) => {
 
   return (
     <Markup.Wrapper as={to ? NavLink : undefined} to={to}>
-      <Markup.Content>
+      <Markup.Content ref={triggerRef}>
         <ChartRound value={data.todayValue} color={color} />
+        <Popup title={data.name} triggerRef={triggerRef} clickable={!to}>
+          <Markup.Popup>
+            <ChartLine {...data} />
+          </Markup.Popup>
+        </Popup>
       </Markup.Content>
       <Markup.Title>{data.name}</Markup.Title>
     </Markup.Wrapper>

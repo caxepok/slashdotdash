@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: stretch;
   flex-basis: 100%;
   gap: ${(p) => p.theme.spacing.medium};
@@ -18,9 +19,22 @@ export const Title = styled.h4`
 `;
 
 export const Content = styled.div`
-  flex-basis: 100%;
+  flex-basis: 140px;
   align-items: stretch;
   display: flex;
   flex-direction: ${(p) => (p.horizontal ? "row" : "column")};
   gap: ${(p) => p.theme.spacing.medium};
+`;
+
+export const Popup = styled.div`
+  width: 400px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: ${(p) => p.theme.spacing.medium};
+
+  > ${Title} {
+    font-weight: 700;
+    text-align: left;
+  }
 `;

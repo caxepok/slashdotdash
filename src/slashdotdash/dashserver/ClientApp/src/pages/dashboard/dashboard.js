@@ -22,7 +22,7 @@ export const Dashboard = React.memo(() => {
         <Layout.Card title="Комбинирование заказов">
           <DashboardSummary type={chartTypes.combinations} />
         </Layout.Card>
-        <Layout.Card title="Графикование конверторов">
+        <Layout.Card title="Графикование конвертеров">
           <Layout.Row count={2}>
             <DashboardSummary type={chartTypes.converter.series} />
             <DashboardSummary type={chartTypes.converter.planFollowing} />

@@ -8,7 +8,7 @@ import { ChartDates } from "./chart-dates";
 import * as Markup from "./chart.styles";
 
 export const ChartLine = React.memo((props) => {
-  const { values, threshold } = props;
+  const { values, threshold, thresholdDirection } = props;
   const { colors } = useTheme();
   const [data, limits] = useChartLine(values);
   const dates = useMemo(() => {
@@ -18,7 +18,7 @@ export const ChartLine = React.memo((props) => {
 
   return (
     <Markup.Wrapper>
-      <Markup.Chart threshold={threshold}>
+      <Markup.Chart threshold={threshold} direction={thresholdDirection}>
         <AutoSizer>
           {(size) => (
             <XYPlot {...size} margin={{ left: 0, top: 0, right: 0, bottom: 0 }}>

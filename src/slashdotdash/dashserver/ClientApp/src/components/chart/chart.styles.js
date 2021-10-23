@@ -34,10 +34,10 @@ export const Chart = styled.div`
         content: "";
         left: 0;
         right: 0;
-        bottom: 0;
-        height: ${p.threshold}%;
+        bottom: ${p.direction ? 0 : p.threshold}%;
+        height: ${p.direction ? p.threshold : 100 - p.threshold}%;
         background: ${colors.danger}11;
-        border-top: 1px dashed ${colors.danger};
+        border-${p.direction ? "top" : "bottom"}: 1px dashed ${colors.danger};
         z-index: 1;
       }
     `}

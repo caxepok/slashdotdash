@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dashserver.Models
+namespace dashserver.Models.DB
 {
     /// <summary>
     /// Остатки по складу

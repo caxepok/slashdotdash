@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dashserver.Models
+namespace dashserver.Models.DB
 {
     /// <summary>
     /// Плановый день
@@ -16,10 +16,6 @@ namespace dashserver.Models
         public int DurationInDays { get; set; }
         public decimal OccupiedPercent { get; set; }
         public decimal UnavailablePercent { get; set; }
-
-        public virtual Plan Plan { get; set; }
-        public virtual Resource Resource { get; set; }
-        public virtual ResourceGroup ResourceGroup { get; set; }
 
         public PlanDay(int planId, int resourceId, int resourceGroupId, DateTimeOffset startDate, int day, int durationInDays, decimal occupiedPercent, decimal unavailablePercent)
         {

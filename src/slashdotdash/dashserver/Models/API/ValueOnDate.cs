@@ -19,5 +19,11 @@ namespace dashserver.Models.API
         /// Предупреждение, отображаемое пользователю
         /// </summary>
         public string Warning { get; set; }
+
+        public ValueOnDate(DateTimeOffset date, decimal value)
+        {
+            Date = date;
+            Value = Math.Round(value, 2);
+        }
     }
 }

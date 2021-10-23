@@ -1,8 +1,11 @@
-﻿using dashserver.Models;
+﻿using dashserver.Models.DB;
 using Microsoft.EntityFrameworkCore;
 
 namespace dashserver.Infrastructure
 {
+    /// <summary>
+    /// Контекст БД
+    /// </summary>
     public class DashDBContext : DbContext
     {
         public DbSet<KPI> KPIs { get; set; }

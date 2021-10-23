@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace dashserver.Enums
+﻿namespace dashserver.Enums
 {
+    /// <summary>
+    /// Тип показателя КПЭ
+    /// </summary>
     public enum KPIType
     {
         /// <summary>
@@ -71,7 +69,5 @@ namespace dashserver.Enums
         /// % составления заданий через контур системы
         /// </summary>
         DailyTasksContourSystem = 15
-
-
     }
 }

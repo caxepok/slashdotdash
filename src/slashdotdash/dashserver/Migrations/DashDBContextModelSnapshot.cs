@@ -19,7 +19,7 @@ namespace dashserver.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("dashserver.Models.KPI", b =>
+            modelBuilder.Entity("dashserver.Models.DB.KPI", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace dashserver.Migrations
                     b.ToTable("KPIs");
                 });
 
-            modelBuilder.Entity("dashserver.Models.KPIRecord", b =>
+            modelBuilder.Entity("dashserver.Models.DB.KPIRecord", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +68,7 @@ namespace dashserver.Migrations
                     b.ToTable("KPIRecords");
                 });
 
-            modelBuilder.Entity("dashserver.Models.Plan", b =>
+            modelBuilder.Entity("dashserver.Models.DB.Plan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +83,7 @@ namespace dashserver.Migrations
                     b.ToTable("Plans");
                 });
 
-            modelBuilder.Entity("dashserver.Models.PlanDay", b =>
+            modelBuilder.Entity("dashserver.Models.DB.PlanDay", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,7 +125,7 @@ namespace dashserver.Migrations
                     b.ToTable("PlanDays");
                 });
 
-            modelBuilder.Entity("dashserver.Models.Resource", b =>
+            modelBuilder.Entity("dashserver.Models.DB.Resource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,7 +148,7 @@ namespace dashserver.Migrations
                     b.ToTable("Resources");
                 });
 
-            modelBuilder.Entity("dashserver.Models.ResourceGroup", b =>
+            modelBuilder.Entity("dashserver.Models.DB.ResourceGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,7 +171,7 @@ namespace dashserver.Migrations
                     b.ToTable("ResourceGroups");
                 });
 
-            modelBuilder.Entity("dashserver.Models.Shop", b =>
+            modelBuilder.Entity("dashserver.Models.DB.Shop", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,7 +186,7 @@ namespace dashserver.Migrations
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("dashserver.Models.Stock", b =>
+            modelBuilder.Entity("dashserver.Models.DB.Stock", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -204,7 +204,7 @@ namespace dashserver.Migrations
                     b.ToTable("Stocks");
                 });
 
-            modelBuilder.Entity("dashserver.Models.StockBalance", b =>
+            modelBuilder.Entity("dashserver.Models.DB.StockBalance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +238,7 @@ namespace dashserver.Migrations
                     b.ToTable("StockBalances");
                 });
 
-            modelBuilder.Entity("dashserver.Models.StockLink", b =>
+            modelBuilder.Entity("dashserver.Models.DB.StockLink", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,16 +263,16 @@ namespace dashserver.Migrations
                     b.ToTable("StockLinks");
                 });
 
-            modelBuilder.Entity("dashserver.Models.KPI", b =>
+            modelBuilder.Entity("dashserver.Models.DB.KPI", b =>
                 {
-                    b.HasOne("dashserver.Models.KPI", null)
+                    b.HasOne("dashserver.Models.DB.KPI", null)
                         .WithMany("KPIRecords")
                         .HasForeignKey("KPIId");
                 });
 
-            modelBuilder.Entity("dashserver.Models.KPIRecord", b =>
+            modelBuilder.Entity("dashserver.Models.DB.KPIRecord", b =>
                 {
-                    b.HasOne("dashserver.Models.KPI", "KPI")
+                    b.HasOne("dashserver.Models.DB.KPI", "KPI")
                         .WithMany()
                         .HasForeignKey("KPIId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -281,21 +281,21 @@ namespace dashserver.Migrations
                     b.Navigation("KPI");
                 });
 
-            modelBuilder.Entity("dashserver.Models.PlanDay", b =>
+            modelBuilder.Entity("dashserver.Models.DB.PlanDay", b =>
                 {
-                    b.HasOne("dashserver.Models.Plan", "Plan")
+                    b.HasOne("dashserver.Models.DB.Plan", "Plan")
                         .WithMany()
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dashserver.Models.ResourceGroup", "ResourceGroup")
+                    b.HasOne("dashserver.Models.DB.ResourceGroup", "ResourceGroup")
                         .WithMany()
                         .HasForeignKey("ResourceGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dashserver.Models.Resource", "Resource")
+                    b.HasOne("dashserver.Models.DB.Resource", "Resource")
                         .WithMany()
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,9 +308,9 @@ namespace dashserver.Migrations
                     b.Navigation("ResourceGroup");
                 });
 
-            modelBuilder.Entity("dashserver.Models.Resource", b =>
+            modelBuilder.Entity("dashserver.Models.DB.Resource", b =>
                 {
-                    b.HasOne("dashserver.Models.ResourceGroup", "ResourceGroup")
+                    b.HasOne("dashserver.Models.DB.ResourceGroup", "ResourceGroup")
                         .WithMany("Resources")
                         .HasForeignKey("ResourceGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,26 +319,24 @@ namespace dashserver.Migrations
                     b.Navigation("ResourceGroup");
                 });
 
-            modelBuilder.Entity("dashserver.Models.ResourceGroup", b =>
+            modelBuilder.Entity("dashserver.Models.DB.ResourceGroup", b =>
                 {
-                    b.HasOne("dashserver.Models.Shop", "Shop")
+                    b.HasOne("dashserver.Models.DB.Shop", null)
                         .WithMany("ResourceGroups")
                         .HasForeignKey("ShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("dashserver.Models.StockBalance", b =>
+            modelBuilder.Entity("dashserver.Models.DB.StockBalance", b =>
                 {
-                    b.HasOne("dashserver.Models.Plan", "Plan")
+                    b.HasOne("dashserver.Models.DB.Plan", "Plan")
                         .WithMany()
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dashserver.Models.Stock", "Stock")
+                    b.HasOne("dashserver.Models.DB.Stock", "Stock")
                         .WithMany()
                         .HasForeignKey("StockId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,15 +347,15 @@ namespace dashserver.Migrations
                     b.Navigation("Stock");
                 });
 
-            modelBuilder.Entity("dashserver.Models.StockLink", b =>
+            modelBuilder.Entity("dashserver.Models.DB.StockLink", b =>
                 {
-                    b.HasOne("dashserver.Models.ResourceGroup", "ResourceGroup")
+                    b.HasOne("dashserver.Models.DB.ResourceGroup", "ResourceGroup")
                         .WithMany()
                         .HasForeignKey("ResourceGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dashserver.Models.Stock", "Stock")
+                    b.HasOne("dashserver.Models.DB.Stock", "Stock")
                         .WithMany()
                         .HasForeignKey("StockId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -368,17 +366,17 @@ namespace dashserver.Migrations
                     b.Navigation("Stock");
                 });
 
-            modelBuilder.Entity("dashserver.Models.KPI", b =>
+            modelBuilder.Entity("dashserver.Models.DB.KPI", b =>
                 {
                     b.Navigation("KPIRecords");
                 });
 
-            modelBuilder.Entity("dashserver.Models.ResourceGroup", b =>
+            modelBuilder.Entity("dashserver.Models.DB.ResourceGroup", b =>
                 {
                     b.Navigation("Resources");
                 });
 
-            modelBuilder.Entity("dashserver.Models.Shop", b =>
+            modelBuilder.Entity("dashserver.Models.DB.Shop", b =>
                 {
                     b.Navigation("ResourceGroups");
                 });

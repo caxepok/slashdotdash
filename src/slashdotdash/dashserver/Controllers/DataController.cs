@@ -3,7 +3,9 @@ using CsvHelper.Configuration;
 using dashserver.Enums;
 using dashserver.Infrastructure;
 using dashserver.Models;
-using Microsoft.AspNetCore.Http;
+using dashserver.Models.API;
+using dashserver.Models.DB;
+using dashserver.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,6 +17,9 @@ using System.Threading.Tasks;
 
 namespace dashserver.Controllers
 {
+    /// <summary>
+    /// Контроллер загрузки данных из внешних источников
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class DataController : ControllerBase
@@ -28,19 +33,12 @@ namespace dashserver.Controllers
             _dashDBContext = dashDBContext;
         }
 
-        [HttpGet("ping")]
-        public IActionResult Ping()
-        {
-            _logger.LogInformation("ping");
-            return Ok("pong");
-        }
-
         /// <summary>
-        /// Загрузка производственного плана
+        /// Загрузка производственного плана (из csv файла)
         /// </summary>
         /// <returns></returns>
-        [HttpPost("upload/plan")]
-        public async Task<IActionResult> Upload([FromQuery]DateTimeOffset planDate, [FromBody]byte[] data)
+        [HttpPost("csv/plan")]
+        public async Task<IActionResult> UploadPlanCSV([FromQuery] DateTimeOffset planDate, [FromBody] byte[] data)
         {
             Stream stream = new MemoryStream(data);
             using var reader = new StreamReader(stream);
@@ -92,7 +90,7 @@ namespace dashserver.Controllers
                 }
 
                 Resource resource = resources.SingleOrDefault(_ => _.Code == resourceCode);
-                if(resource == null)
+                if (resource == null)
                 {
                     resource = new Resource(resourceCode, resourceName, rg.Id);
                     resources.Add(resource);
@@ -101,7 +99,7 @@ namespace dashserver.Controllers
                 }
 
                 Plan plan = plans.SingleOrDefault(_ => _.Date == planDate);
-                if(plan == null)
+                if (plan == null)
                 {
                     plan = new Plan(planDate);
                     plans.Add(plan);
@@ -120,11 +118,11 @@ namespace dashserver.Controllers
         }
 
         /// <summary>
-        /// Загрузка связок складов и групп агрегатов
+        /// Загрузка связок складов и групп агрегатов (из csv файла)
         /// </summary>
         /// <returns></returns>
-        [HttpPost("upload/stock/links")]
-        public async Task<IActionResult> UploadStock([FromBody] byte[] data)
+        [HttpPost("csv/stock/links")]
+        public async Task<IActionResult> UploadStockLinksCSV([FromBody] byte[] data)
         {
             Stream stream = new MemoryStream(data);
             using var reader = new StreamReader(stream);
@@ -194,11 +192,11 @@ namespace dashserver.Controllers
         }
 
         /// <summary>
-        /// Загрузка кладских запасов
+        /// Загрузка кладских запасов (из csv файла)
         /// </summary>
         /// <returns></returns>
-        [HttpPost("upload/stock/balances")]
-        public async Task<IActionResult> UploadStock([FromQuery] DateTimeOffset planDate, [FromBody] byte[] data)
+        [HttpPost("csv/stock/balances")]
+        public async Task<IActionResult> UploadStockBalancesCSV([FromQuery] DateTimeOffset planDate, [FromBody] byte[] data)
         {
             Stream stream = new MemoryStream(data);
             using var reader = new StreamReader(stream);
@@ -227,7 +225,7 @@ namespace dashserver.Controllers
 
                 DateTimeOffset stockDate = DateTimeOffset.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-                Stock stock= stocks.SingleOrDefault(_ => _.Code == stockCode);
+                Stock stock = stocks.SingleOrDefault(_ => _.Code == stockCode);
                 if (stock == null)
                 {
                     stock = new Stock(stockCode, stockName);
@@ -241,6 +239,28 @@ namespace dashserver.Controllers
             _dashDBContext.AddRange(stockBalances);
             await _dashDBContext.SaveChangesAsync();
 
+            return Ok();
+        }
+
+        /// <summary>
+        /// Загрузка плана
+        /// </summary>
+        /// <param name="plan">план</param>
+        [HttpPost("plan")]
+        public async Task<IActionResult> UploadPlan(PlanData plan)
+        {
+            // todo: загрузка данных в базу
+            return Ok();
+        }
+
+        /// <summary>
+        /// Загрузка складских запасов
+        /// </summary>
+        /// <param name="stockData">данные складов</param>
+        [HttpPost("stock")]
+        public async Task<IActionResult> UploadStockData(StockData stockData)
+        {
+            // todo: загрузка данных в базу
             return Ok();
         }
     }

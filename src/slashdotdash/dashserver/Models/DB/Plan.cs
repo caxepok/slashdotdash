@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace dashserver.Models
+namespace dashserver.Models.DB
 {
     /// <summary>
     /// Срез плана на определённый день

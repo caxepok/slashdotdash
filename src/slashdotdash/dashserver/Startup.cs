@@ -1,5 +1,7 @@
 using dashserver.Infrastructure;
 using dashserver.Middleware;
+using dashserver.Services;
+using dashserver.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -27,6 +29,7 @@ namespace dashserver
             services.AddDbContext<DashDBContext>(options =>
                 options.UseNpgsql(_configuration.GetConnectionString(nameof(DashDBContext))));
 
+            services.AddTransient<IAnalysisService, AnalysisService>();
 
             services.AddControllersWithViews(options => {
                 options.InputFormatters.Insert(0, new BinaryInputFormatter());

@@ -1,8 +1,5 @@
 ﻿using dashserver.Enums;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace dashserver.Models.API
 {
@@ -39,5 +36,13 @@ namespace dashserver.Models.API
         /// Значения КПЭ за предудущие дни
         /// </summary>
         public IEnumerable<ValueOnDate> Values { get; set; }
+        /// <summary>
+        /// Для КПЭ есть рекомендации
+        /// </summary>
+        public bool HaveRecomendations { get; set; }
+        /// <summary>
+        /// Для КПЭ есть предупреждения
+        /// </summary>
+        public bool HaveWarnings { get; set; }
     }
 }

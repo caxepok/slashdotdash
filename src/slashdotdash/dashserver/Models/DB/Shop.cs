@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace dashserver.Models
+namespace dashserver.Models.DB
 {
     /// <summary>
     /// Цех
@@ -15,7 +12,7 @@ namespace dashserver.Models
 
         public virtual ICollection<ResourceGroup> ResourceGroups { get; set; }
 
-        public Shop(string  name)
+        public Shop(string name)
         {
             Name = name;
         }

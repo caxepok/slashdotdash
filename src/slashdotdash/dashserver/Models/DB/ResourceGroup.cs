@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace dashserver.Models
-{ 
+namespace dashserver.Models.DB
+{
 
     /// <summary>
     /// Ресурсная группа агрегатов
@@ -16,7 +13,6 @@ namespace dashserver.Models
         public string Name { get; set; }
         public int ShopId { get; set; }
 
-        public virtual Shop Shop { get; set; }
         public virtual ICollection<Resource> Resources { get; set; }
 
         public ResourceGroup(string code, string name, int shopId)

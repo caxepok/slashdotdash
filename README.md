@@ -2,7 +2,6 @@
 Аналитическая система для работы с производственным планом промышленного предприятия «Параплан».
 (черновик)
 
-
 Приложение может запускается в docker`е или как windows\linux сервис.
 
 # демо
@@ -35,14 +34,19 @@
 3. Требутеся установленная СУБД Postgres версии 10 и выше
 
 ## Установка
-tbd
+1. Docker: Запустить контейнер, прописать в ENV переменную ConnectionStrings:DashDBContext строку подключения к бд (например `Server=atomspeech.germanywestcentral.cloudapp.azure.com;User Id=postgres;Password=my_secret_pa$$w0rd;Database=slashdotdash`)
+
+2. Как сервис: 
+2.1 Установить .NET 5.0 для вашей ОС (https://dotnet.microsoft.com/download/dotnet/5.0/runtime)
+2.2 зарегистрировать исполняемый файл как сервис в вашей ОС. В файл appsettings.Production.json прописать настройку ConnectionStrings.DashDBContext строку подключения к БД.
 
 ## База данных
-tbd
+1. Установить Postgresql для вашей ОС (https://www.postgresql.org/download/)
+2. Создать базу данных
 
 ## Выполнение миграций
 Миграции на актуальную версию схемы базы автоматически выполняются при запуске приложения.
 
 ## Разработчики
-Мусалямов Ильдар backend (https://github.com/caxepok)
-Гурьянов Александр frontend (https://github.com/graverok)
+Мусалямов Ильдар :: backend :: https://github.com/caxepok
+Гурьянов Александр :: frontend :: https://github.com/graverok

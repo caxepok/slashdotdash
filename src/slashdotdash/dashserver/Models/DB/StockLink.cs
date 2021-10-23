@@ -1,6 +1,6 @@
 ﻿using dashserver.Enums;
 
-namespace dashserver.Models
+namespace dashserver.Models.DB
 {
     /// <summary>
     /// Связь склада с группой агрегатов

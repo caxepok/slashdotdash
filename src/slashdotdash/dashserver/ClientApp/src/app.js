@@ -10,6 +10,7 @@ import theme from "./theme";
 import { Layout } from "./components";
 import { Shops } from "./pages/shops/shops";
 import { Plan } from "./pages/plan";
+import { Redirect } from "react-router";
 
 function App() {
   const composeEnhancers =
@@ -30,7 +31,8 @@ function App() {
             <Switch>
               <Route path={"/shops"} component={Shops} />
               <Route path={"/plan"} component={Plan} />
-              <Dashboard />
+              <Route path={"/dashboard"} component={Dashboard} />
+              <Redirect to={"/dashboard"} />
             </Switch>
           </Layout>
         </Router>

@@ -16,6 +16,10 @@ namespace dashserver.Models.API
         /// </summary>
         public int Id { get; set; }
         /// <summary>
+        /// Навзвание КПЭ
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
         /// Тип КПЭ
         /// </summary>
         public KPIType Type { get; set; }

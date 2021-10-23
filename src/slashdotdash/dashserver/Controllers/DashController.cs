@@ -47,6 +47,7 @@ namespace dashserver.Controllers
                 var apiKPI = new Models.API.KPI()
                 {
                     Id = kpi.Id,
+                    Name = kpi.Name,
                     Type = kpi.KPIType,
                     Threshold = kpi.Threshold,
                     Values = values,

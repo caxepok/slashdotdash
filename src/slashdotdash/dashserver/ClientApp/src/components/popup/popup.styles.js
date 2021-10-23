@@ -26,11 +26,10 @@ export const Wrapper = styled.div`
 export const Header = styled.div`
   ${(p) => p.theme.typography.title.h4};
   padding-right: 40px;
-  display: flex;
   align-items: center;
   min-height: 40px;
-  margin-top: ${(p) => (p.isFixed ? -5 : -40)}px;
-  opacity: ${(p) => (p.isFixed ? 1 : 0)};
+  margin-top: -5px;
+  display: ${(p) => (p.isFixed ? "flex" : "none")};
 `;
 
 export const Button = styled.div`

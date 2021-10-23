@@ -36,5 +36,12 @@ namespace dashserver.Services.Interfaces
         /// <param name="plan">план</param>
         /// <returns></returns>
         IEnumerable<PlanSummaryNode> GetPlanSummary(Plan plan);
+        /// <summary>
+        /// Возвращает сранение двух планов
+        /// </summary>
+        /// <param name="srcPlan">исходный план</param>
+        /// <param name="dstPlan">план для сравнения</param>
+        /// <returns></returns>
+        IEnumerable<PlanCompareNode> GetPlanCompare(Plan srcPlan, Plan dstPlan);
     }
 }

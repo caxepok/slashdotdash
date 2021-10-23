@@ -188,18 +188,6 @@ namespace dashserver.Services
                     // по дням для группы
                     var perDayRg = days.GroupBy(_ => _.Day)
                         .Select(g => new ValueOnDate(plan.Date.AddDays(g.Key), g.Average(a => a.OccupiedPercent))).ToList();
-                    // за каждый день для группы мы можем проанализировать цепочку складов
-                    foreach (var pdrg in perDayRg)
-                    {
-                        if (pdrg.Value < 80)
-                        {
-                            pdrg.Warning = AnalyzeResourceGroup(resourceGroup.Id, pdrg.Date, pdrg.Value);
-                        }
-                        else if (pdrg.Value > 100)
-                        {
-                            pdrg.Warning = "Группа агрегатов не справится с объёмом";
-                        }
-                    }
                     // считаем для агрегатов
                     foreach (var resource in _dashDBContext.Resources.Where(_ => _.ResourceGroupId == resourceGroup.Id))
                     {
@@ -225,14 +213,30 @@ namespace dashserver.Services
                 nodeSh.Childs = nodesRg;
                 nodesSh.Add(nodeSh);
             }
+            // после того как мы посчитали всё, мы можем проанализировать связки со складами
+            var nodesRgFull = nodesSh.SelectMany(_ => _.Childs).ToList();
+            foreach (var nodeRg in nodesRgFull)
+            {
+                foreach (var pdrg in nodeRg.Values)
+                {
+                    // за каждый день для группы мы можем проанализировать цепочку складов
+                    if (pdrg.Value < 80)
+                    {
+                        pdrg.Warning = AnalyzeResourceGroup(nodeRg.Id, pdrg.Date, pdrg.Value, nodesRgFull);
+                    }
+                    else if (pdrg.Value > 100)
+                    {
+                        pdrg.Warning = "Группа агрегатов не справится с объёмом";
+                    }
+                }
+            }
             return nodesSh;
         }
 
         /// <summary>
         /// Анализ цепочек складов ресурсной группы
         /// </summary>
-        /// <param name="pdrg"></param>
-        private string AnalyzeResourceGroup(int resourceGroupId, DateTimeOffset date, decimal value)
+        private string AnalyzeResourceGroup(int resourceGroupId, DateTimeOffset date, decimal value, List<PlanSummaryNode> nodesRg)
         {
             List<string> warnings = new();
             var stockLinks = _dashDBContext.StockLinks.Include(_ => _.Stock).ToList();  // подтянем связки складов
@@ -247,15 +251,15 @@ namespace dashserver.Services
                 {
                     warnings.Add($"На входящем складе ({stockLink.Stock.Name}) нет материалов.");
                     // проверим цепочку
-                    var chainCheckResult = TestStockChain(stockLinks, stockLink, date);
+                    var chainCheckResult = TestStockChain(stockLinks, stockLink, date, nodesRg);
                     if (chainCheckResult != null)
                         warnings.Add(chainCheckResult);
                 }
-                if(stockLink.Type == StockLinkType.Out && sb.PlannedBalance >= sb.MaxBalance && sb.AllowedOverload)
+                if (stockLink.Type == StockLinkType.Out && sb.PlannedBalance >= sb.MaxBalance && sb.AllowedOverload)
                 {
                     warnings.Add($"Исходящий склад ({stockLink.Stock.Name}) заполнен, нет места.");
                     // проверим цепочку
-                    var chainCheckResult = TestStockChain(stockLinks, stockLink, date);
+                    var chainCheckResult = TestStockChain(stockLinks, stockLink, date, nodesRg);
                     if (chainCheckResult != null)
                         warnings.Add(chainCheckResult);
                 }
@@ -264,36 +268,114 @@ namespace dashserver.Services
         }
 
         /// <summary>
-        /// Рекурсивный проход по агрегатам входящего склада
+        /// Проход по агрегатам связанного склада
         /// </summary>
-        public string TestStockChain(IEnumerable<StockLink> stockLinks, StockLink stockLink, DateTimeOffset date)
+        public string TestStockChain(IEnumerable<StockLink> stockLinks, StockLink stockLink, DateTimeOffset date, List<PlanSummaryNode> nodesRg)
         {
-            return null;
             // ресурсные группы, которые связанны с "проблемной" ресурсной группой
             var linkedResourceGroups = stockLinks.Where(_
-                => _.ResourceGroupId == stockLink.ResourceGroupId &&
+                => _.StockId == stockLink.StockId &&
                    _.Id != stockLink.Id &&
                    _.Type == GetInvertedLinkType(stockLink.Type));
-
+            var stock = _dashDBContext.Stocks.Single(_ => _.Id == stockLink.StockId);
             // для каждой связки проверим склад
             foreach (var linkedResourceGroup in linkedResourceGroups)
             {
                 var stockBalance = _dashDBContext.StockBalances.SingleOrDefault(_ => _.Date == date && _.StockId == linkedResourceGroup.StockId);
                 if (stockBalance == null)
-                    return null;
+                    continue;
 
-                if (stockLink.Type == StockLinkType.In) // у нас кончились запасы - проверим нагрузку группы агрегатов, которые в этот склад отгружают
+                if (stockLink.Type == StockLinkType.Out) // у нас кончились запасы - проверим нагрузку группы агрегатов, которые в этот склад отгружают
                 {
-
+                    var nodeRg = nodesRg.SingleOrDefault(_ => _.Id == stockLink.ResourceGroupId);
+                    if (nodeRg == null)
+                        continue;
+                    if (nodeRg.Values.Single(_ => _.Date == date).Value > 99)    // агрегат, отгружающий на склад не справляется
+                        return $"Агрегаты ({nodeRg.Name}) не успевают отгружать на склад  ({stock.Name}), они полностью загружены";
                 }
-                else
+                else // входящий склад перегружен, следущее оборудование не справляется
                 {
-
+                    var nodeRg = nodesRg.SingleOrDefault(_ => _.Id == stockLink.ResourceGroupId);
+                    if (nodeRg == null)
+                        continue;
+                    if (nodeRg.Values.Single(_ => _.Date == date).Value > 99)    // агрегат, отгружающий на склад не справляется
+                        return $"Агрегаты ({nodeRg.Name}) не успевают обрабатывать исходящую продукцию со склада ({stock.Name})";
                 }
             }
 
+            return null;
+
             static StockLinkType GetInvertedLinkType(StockLinkType stockLinkType) =>
                 stockLinkType == StockLinkType.In ? StockLinkType.Out : StockLinkType.In;
+        }
+
+        public IEnumerable<PlanCompareNode> GetPlanCompare(Plan srcPlan, Plan dstPlan)
+        {
+            var planSrc = GetPlanSummary(srcPlan);
+            var planDst = GetPlanSummary(dstPlan);
+
+            List<PlanCompareNode> shopCompares = new();
+
+            // перебираем цеха
+            foreach (var shopSrc in planSrc)
+            {
+                List<PlanCompareNode> rgCompares = new();
+                List<ValueOnDateWithCompare> shopCompareValues = new();
+                var shopDst = planDst.SingleOrDefault(_ => _.Name == shopSrc.Name);
+                // дни по цехам
+                foreach (var shopSrcValue in shopSrc.Values)
+                {
+                    ValueOnDateWithCompare shopCompareValue = new ValueOnDateWithCompare(shopSrcValue.Date, shopSrcValue.Value);
+                    shopCompareValues.Add(shopCompareValue);
+                    // находим тот же день в другом плане по цеху
+                    var shopDstValue = shopDst.Values.SingleOrDefault(_ => _.Date == shopSrcValue.Date);
+                    if (shopDstValue != null)
+                        shopCompareValue.SetDestValue(shopDstValue.Value);
+                }                    // перебираем группы агрегатов
+                foreach (var rgSrc in shopSrc.Childs)
+                {
+                    List<PlanCompareNode> resCompares = new();
+                    List<ValueOnDateWithCompare> rgCompareValues = new();
+                    var rgDst = shopDst.Childs.SingleOrDefault(_ => _.Name == rgSrc.Name);
+                    // дни по группам агрегатов
+                    foreach (var rgSrcValue in rgSrc.Values)
+                    {
+                        ValueOnDateWithCompare rgCompareValue = new ValueOnDateWithCompare(rgSrcValue.Date, rgSrcValue.Value);
+                        rgCompareValues.Add(rgCompareValue);
+                        // находим тот же день в группе агрегатов в цеху
+                        var rgDstValue = rgDst.Values.SingleOrDefault(_ => _.Date == rgSrcValue.Date);
+                        if (rgDstValue != null)
+                            rgCompareValue.SetDestValue(rgDstValue.Value);
+                    }
+                    // перебираем агрегаты
+                    foreach (var resSrc in rgSrc.Childs)
+                    {
+                        List<ValueOnDateWithCompare> resCompareValues = new();
+                        var resDst = rgDst.Childs.SingleOrDefault(_ => _.Name == resSrc.Name);
+                        // дни по агрегатам
+                        foreach (var resSrcValue in resSrc.Values)
+                        {
+                            ValueOnDateWithCompare resCompareValue = new ValueOnDateWithCompare(resSrcValue.Date, resSrcValue.Value);
+                            resCompareValues.Add(resCompareValue);
+                            // находим тот же день в агрегатах
+                            var resDstValue = resDst.Values.SingleOrDefault(_ => _.Date == resSrcValue.Date);
+                            if (resDstValue != null)
+                                resCompareValue.SetDestValue(resDstValue.Value);
+                        }
+                        var resCompare = new PlanCompareNode(resSrc.Id, resSrc.Name, resCompareValues);
+                        resCompares.Add(resCompare);
+
+                    }
+                    var rgCompare = new PlanCompareNode(rgSrc.Id, rgSrc.Name, rgCompareValues);
+                    rgCompare.Childs = resCompares;
+                    rgCompares.Add(rgCompare);
+                }
+                var shopCompare = new PlanCompareNode(shopSrc.Id, shopSrc.Name, shopCompareValues);
+                shopCompare.Childs = rgCompares;
+                shopCompares.Add(shopCompare);
+            }
+
+            return shopCompares;
         }
 
         /// <summary>

@@ -69,6 +69,20 @@ namespace dashserver.Controllers
             return Ok(results);
         }
 
+        [HttpGet("plan/compare")]
+        public IActionResult GetPlanCompare(DateTimeOffset srcPlanDate, DateTimeOffset dstPlanDate)
+        {
+            Plan srcPlan = _dashDBContext.Plans.SingleOrDefault(_ => _.Date == srcPlanDate);
+            if (srcPlan == null)
+                return NotFound($"Plan not found for date: {srcPlanDate}");
+            Plan dstPlan = _dashDBContext.Plans.SingleOrDefault(_ => _.Date == dstPlanDate);
+            if (dstPlan == null)
+                return NotFound($"Plan not found for date: {dstPlanDate}");
+
+            var results = _analysisService.GetPlanCompare(srcPlan, dstPlan);
+            return Ok(results);
+        }
+
         /// <summary>
         /// Возвращает среднюю нагрузку по ресурсным группам агрегатов
         /// </summary>

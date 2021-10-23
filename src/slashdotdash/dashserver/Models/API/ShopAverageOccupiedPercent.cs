@@ -23,6 +23,10 @@ namespace dashserver.Models.API
         /// </summary>
         public decimal Threshold { get; set; } = 90;
         /// <summary>
+        /// Тип порога
+        /// </summary>
+        public bool ThresholdDirection { get; set; } = true;
+        /// <summary>
         /// Данные загрузки
         /// </summary>
         public decimal Value { get; set; }

@@ -63,6 +63,7 @@ namespace dashserver.Services
                     Name = kpi.Name,
                     Type = kpi.KPIType,
                     Threshold = kpi.Threshold,
+                    ThresholdDirection = kpi.ThresholdDirection,
                     Color = color,
                     Values = values,
                     TodayValue = todayValue,
@@ -230,7 +231,7 @@ namespace dashserver.Services
                         foreach (var pdres in perDayRes)
                         {
                             if (pdres.Value > 100)
-                                pdres.Warning = "Агрегат не справится с объёмом";
+                                pdres.Warning = $"Агрегат ({resource.Name}) не справится с объёмом";
                         }
                         PlanSummaryNode nodeRes = new(resource.Id, resource.Name, String.Empty, perDayRes);
                         nodesRes.Add(nodeRes);
@@ -250,13 +251,13 @@ namespace dashserver.Services
                 foreach (var pdrg in nodeRg.Values)
                 {
                     // за каждый день для группы мы можем проанализировать цепочку складов
-                    if (pdrg.Value < 85)
+                    if (pdrg.Value <= 100)
                     {
                         pdrg.Warning = AnalyzeResourceGroup(nodeRg.Id, pdrg.Date, nodesRgFull);
                     }
                     if (pdrg.Value > 100)
                     {
-                        pdrg.Warning = "Группа агрегатов не справится с объёмом";
+                        pdrg.Warning = $"Группа агрегатов {nodeRg.Name} не справится с объёмом";
                     }
                 }
             }
@@ -265,8 +266,8 @@ namespace dashserver.Services
 
         public IEnumerable<PlanCompareNode> GetPlanCompare(Plan srcPlan, Plan dstPlan)
         {
-            var planSrc = GetPlanSummary(srcPlan);
-            var planDst = GetPlanSummary(dstPlan);
+            var planDst = GetPlanSummary(srcPlan);
+            var planSrc = GetPlanSummary(dstPlan);
 
             List<PlanCompareNode> shopCompares = new();
 
@@ -363,13 +364,13 @@ namespace dashserver.Services
         }
 
         /// <summary>
-        /// Анализ цепочек складов ресурсной группы
+        /// Анализ цепочек складов группы агрегатов
         /// </summary>
         private string AnalyzeResourceGroup(int resourceGroupId, DateTimeOffset date, List<PlanSummaryNode> nodesRg)
         {
             List<string> warnings = new();
             // проверим склады
-            var stockLinks = _dashDBContext.StockLinks.Include(_ => _.Stock).ToList();  // подтянем связки складов
+            var stockLinks = _dashDBContext.StockLinks.Include(_ => _.Stock).ToList();
             foreach (var stockLink in stockLinks.Where(_ => _.ResourceGroupId == resourceGroupId))
             {
                 // баланс склада на нужную дату
@@ -399,7 +400,7 @@ namespace dashserver.Services
             bool unbalanced = false;
             for (int i = 0; i < resources.Count; i++)
             {
-                for (int j = resources.Count + 1; j < resources.Count; j++)
+                for (int j = i + 1; j < resources.Count; j++)
                 {
                     var resource1 = resources[i].Values.Single(_ => _.Date == date).Value;
                     var resource2 = resources[j].Values.Single(_ => _.Date == date).Value;
@@ -415,7 +416,7 @@ namespace dashserver.Services
                     break;
             }
             if (unbalanced)
-                warnings.Add("Агрегаты внутри группы загруженны неравномерно");
+                warnings.Add("Агрегаты внутри группы загружены неравномерно");
 
             if (!warnings.Any())
                 return null;

@@ -33,6 +33,10 @@ namespace dashserver.Models.API
         /// </summary>
         public decimal Threshold { get; set; }
         /// <summary>
+        /// Желаемая зона КПЭ
+        /// </summary>
+        public bool ThresholdDirection { get; set; }
+        /// <summary>
         /// Значения КПЭ за предудущие дни
         /// </summary>
         public IEnumerable<ValueOnDate> Values { get; set; }

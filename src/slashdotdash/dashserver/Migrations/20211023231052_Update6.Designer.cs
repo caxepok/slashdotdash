@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using dashserver.Infrastructure;
@@ -9,9 +10,10 @@ using dashserver.Infrastructure;
 namespace dashserver.Migrations
 {
     [DbContext(typeof(DashDBContext))]
-    partial class DashDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211023231052_Update6")]
+    partial class Update6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,6 +28,9 @@ namespace dashserver.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("KPIId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("KPIType")
                         .HasColumnType("integer");
 
@@ -39,6 +44,8 @@ namespace dashserver.Migrations
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("KPIId");
 
                     b.ToTable("KPIs");
                 });
@@ -255,6 +262,13 @@ namespace dashserver.Migrations
                     b.ToTable("StockLinks");
                 });
 
+            modelBuilder.Entity("dashserver.Models.DB.KPI", b =>
+                {
+                    b.HasOne("dashserver.Models.DB.KPI", null)
+                        .WithMany("KPIRecords")
+                        .HasForeignKey("KPIId");
+                });
+
             modelBuilder.Entity("dashserver.Models.DB.KPIRecord", b =>
                 {
                     b.HasOne("dashserver.Models.DB.KPI", "KPI")
@@ -320,6 +334,11 @@ namespace dashserver.Migrations
                     b.Navigation("ResourceGroup");
 
                     b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("dashserver.Models.DB.KPI", b =>
+                {
+                    b.Navigation("KPIRecords");
                 });
 
             modelBuilder.Entity("dashserver.Models.DB.ResourceGroup", b =>

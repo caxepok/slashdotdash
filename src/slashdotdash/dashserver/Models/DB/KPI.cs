@@ -28,7 +28,5 @@ namespace dashserver.Models.DB
         /// Направление КПЭ true - должно быть больше целевого, false - должно быть меньше целевого
         /// </summary>
         public bool ThresholdDirection { get; set; }
-
-        public virtual ICollection<KPI> KPIRecords { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 export const colors = {
   success: "#67AE19",
-  warning: "yellow",
+  warning: "#FECD42",
   danger: "#EB3216",
 };
 

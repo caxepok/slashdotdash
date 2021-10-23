@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { loadData, loadShopData } from "../../reducers/dashboard";
+import { loadData, loadPlanData, loadShopData } from "../../reducers/dashboard";
 import { ChartBar, DatePicker, Layout } from "../../components";
 import * as Markup from "./shops.styles";
 import { chartTypes } from "../../consts";
@@ -15,11 +15,12 @@ export const Shops = React.memo(() => {
   const date = useSelector(({ dashboard }) => dashboard.date);
   const dispatch = useDispatch();
   useEffect(() => dispatch(loadShopData(date)), [dispatch, date]);
+  useEffect(() => dispatch(loadPlanData(date)), [dispatch, date]);
   useEffect(() => dispatch(loadData()), [dispatch]);
 
   return (
     <Layout.Page
-      backTo={"/dashboard"}
+      backTo={"/"}
       title={
         <>
           Загрузка оборудования на
@@ -28,10 +29,7 @@ export const Shops = React.memo(() => {
           </Markup.DatePickerWrapper>
         </>
       }>
-      <Layout.Column sizes={[1, "auto"]}>
-        <ChartBar {...chartData} values={shopData} />
-        <p>Какой-то текст</p>
-      </Layout.Column>
+      <ChartBar {...chartData} values={shopData} />
     </Layout.Page>
   );
 });

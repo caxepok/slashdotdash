@@ -21,6 +21,13 @@ export const Title = styled.h3`
   text-align: center;
   ${(p) => p.theme.typography.title.h3};
   color: ${(p) => p.theme.colors.primary};
+  position: relative;
+
+  > a {
+    color: ${(p) => p.theme.colors.accent};
+    text-decoration: none;
+    border-bottom: 1px solid ${(p) => p.theme.colors.accent}44;
+  }
 `;
 
 export const Content = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import * as CardMarkup from "./card.styles";
 import * as PageMarkup from "./page.styles";
-import { ReactComponent as BackArrow } from "./back.svg";
+import { ReactComponent as BackArrow } from "../../assets/shevron.svg";
 import styled from "styled-components";
 
 const Card = React.memo(

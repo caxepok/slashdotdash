@@ -20,12 +20,12 @@ const theme = {
     background: "#F2F2F2",
     accent: "#843FB5",
     primary: "#222222",
-    secondary: "#666",
-    tertiary: "#999",
-    quarternary: "#CCC",
+    secondary: "#666666",
+    tertiary: "#999999",
+    quarternary: "#CCCCCC",
   },
   typography: {
-    fontSize: new CSSUnit(14),
+    fontSize: new CSSUnit(13),
     lineHeight: new CSSUnit(18),
     title: {
       h2: css`

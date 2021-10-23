@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { loadData } from "../../reducers/dashboard";
 import { chartTypes } from "../../consts";
 import { DashboardSummary } from "./dashboard-summary";
+import { NavLink } from "react-router-dom";
 
 export const Dashboard = React.memo(() => {
   const dispatch = useDispatch();
@@ -28,8 +29,8 @@ export const Dashboard = React.memo(() => {
           </Layout.Row>
         </Layout.Card>
       </Layout.Row>
-      <Layout.Card title="Календарное планирование">
-        <DashboardSummary type={chartTypes.planning.resourceWorkload} to={"/dashboard/shops"} />
+      <Layout.Card title={<NavLink to="/plan">Календарное планирование</NavLink>}>
+        <DashboardSummary type={chartTypes.planning.resourceWorkload} to={"/shops"} />
         <DashboardSummary type={chartTypes.planning.plannedOTIF} />
         <DashboardSummary type={chartTypes.planning.storageFailures} />
         <DashboardSummary type={chartTypes.planning.companyLoads} />

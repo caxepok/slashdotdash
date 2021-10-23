@@ -7,6 +7,7 @@ const initialState = {
 const SET_DATA = "dashboard/SET_DATA";
 const SET_DATE = "dashboard/SET_DATE";
 const SET_SHOP_DATA = "dashboard/SET_SHOP_DATA";
+const SET_PLAN_DATA = "dashboard/SET_PLAN_DATA";
 
 const dashboardReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -29,6 +30,13 @@ const dashboardReducer = (state = initialState, action) => {
       };
     }
 
+    case SET_PLAN_DATA: {
+      return {
+        ...state,
+        planData: action.data,
+      };
+    }
+
     default: {
       return state;
     }
@@ -38,6 +46,8 @@ const dashboardReducer = (state = initialState, action) => {
 export const loadData = () => async (dispatch) => dispatch({ type: SET_DATA, data: await dataApi.fetchData() });
 export const loadShopData = (date) => async (dispatch) =>
   dispatch({ type: SET_SHOP_DATA, data: await dataApi.fetchShopData(date) });
+export const loadPlanData = (date) => async (dispatch) =>
+  dispatch({ type: SET_PLAN_DATA, data: await dataApi.fetchPlanData(date) });
 export const setDate = (date) => ({ type: SET_DATE, date });
 
 export default dashboardReducer;

@@ -9,6 +9,7 @@ import { Dashboard } from "./pages/dashboard";
 import theme from "./theme";
 import { Layout } from "./components";
 import { Shops } from "./pages/shops/shops";
+import { Plan } from "./pages/plan";
 
 function App() {
   const composeEnhancers =
@@ -27,7 +28,8 @@ function App() {
         <Router>
           <Layout>
             <Switch>
-              <Route path={"*/shops"} component={Shops} />
+              <Route path={"/shops"} component={Shops} />
+              <Route path={"/plan"} component={Plan} />
               <Dashboard />
             </Switch>
           </Layout>

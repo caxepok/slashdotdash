@@ -1,31 +1,31 @@
-import React, { useCallback } from "react";
+import React from "react";
 import ReactDatePicker from "react-datepicker";
 import { ru } from "date-fns/locale";
 import * as Markup from "./date-picker.styles";
 import "react-datepicker/dist/react-datepicker.min.css";
-import { useDispatch, useSelector } from "react-redux";
-import { setDate } from "../../reducers/dashboard";
 
-const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
+const CustomInput = React.forwardRef(({ value, onClick, placeholder }, ref) => {
   return (
-    <Markup.Wrapper onClick={onClick} ref={ref}>
-      {value}
+    <Markup.Wrapper onClick={onClick} ref={ref} isPlaceholder={!value}>
+      {value || placeholder}
     </Markup.Wrapper>
   );
 });
 
-export const DatePicker = React.memo(() => {
-  const dispatch = useDispatch();
-  const date = useSelector(({ dashboard }) => dashboard.date);
-  const handleChange = useCallback((date) => dispatch(setDate(date)), [dispatch]);
+export const DatePicker = React.memo((props) => {
+  const { value, onChange, placeholder, excludeDates } = props;
 
   return (
     <ReactDatePicker
       locale={ru}
+      minDate={new Date("2021-10-05")}
+      maxDate={new Date("2021-10-07")}
       dateFormat="dd.MM.yyyy"
       disabledKeyboardNavigation
-      selected={date}
-      onChange={handleChange}
+      selected={value}
+      onChange={onChange}
+      excludeDates={excludeDates}
+      placeholderText={placeholder}
       customInput={<CustomInput />}
     />
   );

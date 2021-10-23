@@ -5,7 +5,7 @@ import { ChartBar } from "../chart";
 
 export const Shops = React.memo((props) => {
   const shopData = useSelector(({ dashboard }) => dashboard.shopData, shallowEqual);
-  const date = useSelector(({ dashboard }) => dashboard.date);
+  const date = useSelector(({ dashboard }) => dashboard.date.shop);
   const dispatch = useDispatch();
   useEffect(() => dispatch(loadShopData(date)), [dispatch, date]);
 

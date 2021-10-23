@@ -8,4 +8,5 @@ export const Wrapper = styled.span`
   align-items: center;
   cursor: pointer;
   border-bottom: 1px solid ${(p) => p.theme.colors.accent}66;
+  font-weight: ${(p) => (p.isPlaceholder ? 400 : 700)};
 `;

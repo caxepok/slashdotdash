@@ -24,7 +24,6 @@ export const Chart = styled.div`
         position: absolute;
         left: -10px;
         bottom: ${p.threshold}%;
-        background: #fff;
         transform: translateY(50%);
         padding: 0 3px;
         color: ${colors.danger};
@@ -37,7 +36,9 @@ export const Chart = styled.div`
         right: 0;
         bottom: 0;
         height: ${p.threshold}%;
+        background: ${colors.danger}11;
         border-top: 1px dashed ${colors.danger};
+        z-index: 1;
       }
     `}
 
@@ -173,7 +174,7 @@ export const Dates = styled.div`
   display: flex;
   margin: 0 10px;
   min-height: 20px;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-direction: row-reverse;
   overflow: hidden;
   font-size: 11px;

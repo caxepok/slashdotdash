@@ -22,9 +22,11 @@ export const ChartDates = React.memo((props) => {
 
   useEffect(() => {
     if (count) {
+      if (!blockRef.current) return;
+      const width = blockRef.current.offsetWidth;
       let multiplier = 1;
       let itemWidth = 100 / (count / multiplier);
-      while (itemWidth < 30) {
+      while ((itemWidth / 100) * width < 30) {
         multiplier++;
         itemWidth = 100 / (count / multiplier);
       }

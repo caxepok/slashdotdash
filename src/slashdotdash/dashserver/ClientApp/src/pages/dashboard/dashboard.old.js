@@ -1,28 +1,23 @@
 import React, { useEffect } from "react";
-import { Layout, ChartLine, DatePicker, ChartRound, Shops } from "../../components";
+import { Layout, ChartLine, ChartRound, Shops } from "../../components";
 import { useDispatch } from "react-redux";
 import { loadData } from "../../reducers/dashboard";
 import { DashboardItem } from "./dashboard-item";
 import { chartTypes } from "../../consts";
 
-export const Dashboard = React.memo(() => {
+export const DashboardOld = React.memo(() => {
   const dispatch = useDispatch();
   useEffect(() => dispatch(loadData()), [dispatch]);
 
   return (
     <Layout.Column sizes={[5, 2, 3]}>
       <Layout.Row sizes={[2, 3, 4]}>
-        <Layout.Column sizes={["61px", 1]}>
-          <Layout.Card>
-            <DatePicker />
-          </Layout.Card>
-          <Layout.Card>
-            <Layout.Column sizes={["auto", 1]}>
-              <DashboardItem type={chartTypes.orderFailures} />
-              <DashboardItem type={chartTypes.quotaFill} as={ChartLine} />
-            </Layout.Column>
-          </Layout.Card>
-        </Layout.Column>
+        <Layout.Card>
+          <Layout.Column sizes={["auto", 1]}>
+            <DashboardItem type={chartTypes.orderFailures} />
+            <DashboardItem type={chartTypes.quotaFill} as={ChartLine} />
+          </Layout.Column>
+        </Layout.Card>
         <Layout.Card>
           <Layout.Row count={2}>
             <Layout.Column sizes={[1, "auto"]}>

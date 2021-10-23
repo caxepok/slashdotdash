@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import dashboardReducer from "./reducers/dashboard";
 import thunk from "redux-thunk";
-import { Dashboard } from "./pages/dashboard";
+import { Dashboard, DashboardOld } from "./pages/dashboard";
 import theme from "./theme";
 import { Layout } from "./components";
 import { Shops } from "./pages/shops/shops";
@@ -31,6 +31,7 @@ function App() {
             <Switch>
               <Route path={"/shops"} component={Shops} />
               <Route path={"/plan"} component={Plan} />
+              <Route path={"/dashboard/old"} component={DashboardOld} />
               <Route path={"/dashboard"} component={Dashboard} />
               <Redirect to={"/dashboard"} />
             </Switch>

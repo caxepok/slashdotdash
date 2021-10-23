@@ -5,15 +5,32 @@ import { ReactComponent as ExpandIcon } from "../../assets/shevron.svg";
 import * as Markup from "./plan-table.styles";
 import { colors } from "../../consts";
 
-const getCellStyles = (value, threshold) => {
-  if (value < threshold - 5 || value > 100)
-    return { background: `${colors.danger}`, color: "#FFFFFF", fontWeight: 700 };
+const getCellStyles = (item, threshold, isCompare) => {
+  if (isCompare) {
+    const { diff } = item;
+    if (typeof diff === "number" && diff > 0) return { background: `${colors.success}44` };
+    if (typeof diff === "number" && diff < 0)
+      return { background: `${colors.danger}`, color: "#FFFFFF", fontWeight: 700 };
+    return { background: `${colors.warning}` };
+  }
+
+  const { value } = item;
+  if (value > 100) return { background: `#660000`, color: "#FFFFFF", fontWeight: 700 };
+  if (value < threshold - 5) return { background: `${colors.danger}`, color: "#FFFFFF", fontWeight: 700 };
   if (value > threshold + 5) return { background: `${colors.success}44` };
   return { background: `${colors.warning}` };
 };
 
+const getValueLabel = (item, isCompare = false) => {
+  return isCompare
+    ? item.destValue
+      ? `${item.destValue.toFixed(0)}% (${item.diff.toFixed(1)}%)`
+      : "—"
+    : `${item.value.toFixed(0)}%`;
+};
+
 export const PlanTableRow = React.memo((props) => {
-  const { name, childs, values, threshold, depth = 0 } = props;
+  const { name, childs, values, threshold, depth = 0, isCompare } = props;
   const [isExpanded, setExpanded] = useState(false);
   const hasChildren = useMemo(() => Boolean(childs && childs.length), [childs]);
   const onClick = useMemo(() => {
@@ -33,17 +50,15 @@ export const PlanTableRow = React.memo((props) => {
         </Markup.Title>
         {values.map((item, index) => {
           const id = `tooltip-${v4()}`;
-          if (item.warning) {
-            console.log(item);
-          }
+
           return (
             <Markup.Value
               key={index}
               data-tip
               data-for={id}
-              {...getCellStyles(item.value, threshold)}
+              {...getCellStyles(item, threshold, isCompare)}
               hasWarning={item.warning}>
-              {item.value.toFixed(0)}%
+              {getValueLabel(item, isCompare)}
               {item.warning && (
                 <ReactTooltip id={id} aria-haspopup="true">
                   {item.warning}
@@ -56,7 +71,13 @@ export const PlanTableRow = React.memo((props) => {
       {hasChildren &&
         isExpanded &&
         childs.map((item) => (
-          <PlanTableRow depth={depth + 1} key={`${item.name}${item.id}`} {...item} threshold={threshold} />
+          <PlanTableRow
+            depth={depth + 1}
+            key={`${item.name}${item.id}`}
+            {...item}
+            threshold={threshold}
+            isCompare={isCompare}
+          />
         ))}
     </>
   );

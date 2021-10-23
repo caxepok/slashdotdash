@@ -60,6 +60,14 @@ export const Value = styled.span`
   border-radius: 3px;
   position: relative;
 
+  > sup {
+    position: relative;
+    top: -0.2em;
+    left: 0.3em;
+    font-weight: bold;
+    width: 2.5em;
+  }
+
   ${(p) =>
     p.hasWarning &&
     css`
@@ -82,8 +90,8 @@ export const Shevron = styled.span`
   width: 12px;
   height: 12px;
   position: absolute;
-  top: 8px;
+  top: 50%;
   margin-left: -22px;
-  transform: rotate(${(p) => (p.isExpanded ? 270 : 180)}deg);
+  transform: translateY(-50%) rotate(${(p) => (p.isExpanded ? 270 : 180)}deg);
   fill: ${(p) => p.theme.colors.secondary};
 `;

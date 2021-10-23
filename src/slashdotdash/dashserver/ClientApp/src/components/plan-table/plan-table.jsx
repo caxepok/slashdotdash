@@ -5,7 +5,7 @@ import { AutoSizer } from "react-virtualized";
 import format from "date-fns/format";
 
 export const PlanTable = React.memo((props) => {
-  const { data, threshold } = props;
+  const { data, threshold, isCompare } = props;
   const headData = useMemo(() => {
     if (!data || !data.length) return null;
 
@@ -28,7 +28,7 @@ export const PlanTable = React.memo((props) => {
           </Markup.Head>
           <Markup.Body>
             {data.map((item) => (
-              <PlanTableRow key={`${item.name}${item.id}`} {...item} threshold={threshold} />
+              <PlanTableRow key={`${item.name}${item.id}`} {...item} threshold={threshold} isCompare={isCompare} />
             ))}
           </Markup.Body>
         </Markup.Table>

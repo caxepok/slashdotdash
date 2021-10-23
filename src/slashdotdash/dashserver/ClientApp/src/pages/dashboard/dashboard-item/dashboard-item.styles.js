@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
 
 export const Title = styled.h4`
   ${(p) => p.theme.typography.title.h4};
-  font-weight: 400;
   color: ${(p) => p.theme.colors.primary};
   text-align: center;
   margin: 0;

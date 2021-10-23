@@ -29,17 +29,17 @@ const theme = {
     lineHeight: new CSSUnit(18),
     title: {
       h2: css`
-        font-size: 22px;
+        font-size: 23px;
         line-height: 26px;
         font-weight: 700;
       `,
       h3: css`
-        font-size: 18px;
+        font-size: 19px;
         line-height: 22px;
         font-weight: 700;
       `,
       h4: css`
-        font-size: 14px;
+        font-size: 15px;
         line-height: 16px;
         font-weight: 700;
       `,

@@ -18,7 +18,7 @@ export const ChartLine = React.memo((props) => {
 
   return (
     <Markup.Wrapper>
-      <Markup.Chart threshold={threshold} direction={thresholdDirection}>
+      <Markup.Chart threshold={threshold} thresholdDirection={thresholdDirection}>
         <AutoSizer>
           {(size) => (
             <XYPlot {...size} margin={{ left: 0, top: 0, right: 0, bottom: 0 }}>

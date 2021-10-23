@@ -24,6 +24,10 @@ namespace dashserver.Models.DB
         /// Граничное занчение
         /// </summary>
         public decimal Threshold { get; set; }
+        /// <summary>
+        /// Направление КПЭ true - должно быть больше целевого, false - должно быть меньше целевого
+        /// </summary>
+        public bool ThresholdDirection { get; set; }
 
         public virtual ICollection<KPI> KPIRecords { get; set; }
     }

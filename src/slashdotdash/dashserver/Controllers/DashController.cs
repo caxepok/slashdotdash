@@ -127,13 +127,6 @@ namespace dashserver.Controllers
         public IActionResult GetStockKPI(DateTimeOffset planDate)
         {
             return Ok();
-            //Plan plan = _dashDBContext.Plans.SingleOrDefault(_ => _.Date == planDate);
-            //if (plan == null)
-            //    return NotFound($"Plan not found for date: {planDate}");
-
-            //var stockBalances = _dashDBContext.StockBalances.Where(_ => _.Date <= planDate.AddDays(DepthDays)).OrderBy(_ => _.Date).ToList();
-            
-            //return Ok(resourceOccupiedPercents);
         }
     }
 }

@@ -44,5 +44,9 @@ namespace dashserver.Models.API
         /// Для КПЭ есть предупреждения
         /// </summary>
         public bool HaveWarnings { get; set; }
+        /// <summary>
+        /// Цвет, в который нужно покрасить кружоок
+        /// </summary>
+        public string Color { get; set; }
     }
 }

@@ -49,4 +49,5 @@
 
 ### Разработчики
 Мусалямов Ильдар :: backend :: https://github.com/caxepok
+
 Гурьянов Александр :: frontend :: https://github.com/graverok

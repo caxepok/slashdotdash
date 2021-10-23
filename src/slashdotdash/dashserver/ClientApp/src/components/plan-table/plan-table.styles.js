@@ -59,14 +59,7 @@ export const Value = styled.span`
   margin-left: 2px;
   border-radius: 3px;
   position: relative;
-
-  > sup {
-    position: relative;
-    top: -0.2em;
-    left: 0.3em;
-    font-weight: bold;
-    width: 2.5em;
-  }
+  cursor: default;
 
   ${(p) =>
     p.hasWarning &&
@@ -84,6 +77,11 @@ export const Value = styled.span`
         border: 1px solid #ffffff;
       }
     `};
+`;
+
+export const Tip = styled.span`
+  white-space: pre;
+  font-weight: 400;
 `;
 
 export const Shevron = styled.span`

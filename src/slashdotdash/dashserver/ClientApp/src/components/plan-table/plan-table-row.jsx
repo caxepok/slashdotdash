@@ -61,7 +61,7 @@ export const PlanTableRow = React.memo((props) => {
               {getValueLabel(item, isCompare)}
               {item.warning && (
                 <ReactTooltip id={id} aria-haspopup="true">
-                  {item.warning}
+                  <Markup.Tip>{item.warning}</Markup.Tip>
                 </ReactTooltip>
               )}
             </Markup.Value>

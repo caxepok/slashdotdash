@@ -14,9 +14,22 @@ export const fetchData = async () => {
   }
 };
 
-export const fetchShopData = async (date) => {
+export const fetchShopsData = async (date) => {
   try {
     const res = await fetch(`${API_URL}/shop?planDate=${format(date, "yyyy-MM-dd")}`);
+    if (res.status === 200) {
+      return await res.json();
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+export const fetchShopData = async (date, id) => {
+  console.log(date, id);
+  try {
+    const res = await fetch(`${API_URL}/shop/resourceGroup?planDate=${format(date, "yyyy-MM-dd")}&shopId=${id}`);
     if (res.status === 200) {
       return await res.json();
     }
@@ -50,3 +63,5 @@ export const fetchComparePlanData = async (dateSrc, dateDst) => {
     return null;
   }
 };
+
+// /dash/shop/resourceGroup?planDate=2021-10-07&shopId=1

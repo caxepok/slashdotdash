@@ -1,22 +1,15 @@
 import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { loadData, loadPlanData, loadShopData, setDate } from "../../reducers/dashboard";
+import { loadShopsData, setDate } from "../../reducers/dashboard";
 import { ChartBar, DatePicker, Layout } from "../../components";
+import { ShopsItem } from "./shops-item";
 import * as Markup from "./shops.styles";
-import { chartTypes } from "../../consts";
 
 export const Shops = React.memo(() => {
   const shopData = useSelector(({ dashboard }) => dashboard.shopData, shallowEqual);
-  const chartData = useSelector(
-    ({ dashboard }) =>
-      dashboard.data && dashboard.data.find((item) => item.type === chartTypes.planning.resourceWorkload),
-    shallowEqual,
-  );
   const date = useSelector(({ dashboard }) => dashboard.date.shop);
   const dispatch = useDispatch();
-  useEffect(() => dispatch(loadShopData(date)), [dispatch, date]);
-  useEffect(() => dispatch(loadPlanData(date)), [dispatch, date]);
-  useEffect(() => dispatch(loadData()), [dispatch]);
+  useEffect(() => dispatch(loadShopsData(date)), [dispatch, date]);
 
   return (
     <Layout.Page
@@ -29,7 +22,13 @@ export const Shops = React.memo(() => {
           </Markup.DatePickerWrapper>
         </>
       }>
-      <ChartBar {...chartData} values={shopData} />
+      <Layout.Column sizes={[4, 2]}>
+        <ChartBar values={shopData} />
+        <Layout.Row sizes={[3, 3, 3, 3, 5, 5]}>
+          {shopData &&
+            shopData.map((item) => <ShopsItem key={item.shopId} title={item.name} id={item.shopId} date={date} />)}
+        </Layout.Row>
+      </Layout.Column>
     </Layout.Page>
   );
 });

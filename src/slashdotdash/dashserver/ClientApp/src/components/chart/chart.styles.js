@@ -92,7 +92,9 @@ export const Bar = styled.div(
       font-weight: 700;
       color: #fff;
       position: absolute;
-      width: 50px;
+      min-width: 30px;
+      max-width: 60px;
+      width: 40%;
       left: 50%;
       top: 0;
       height: 100%;

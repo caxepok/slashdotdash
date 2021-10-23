@@ -20,8 +20,6 @@ export const Plan = React.memo(() => {
     }
   }, [dispatch, date, compareDate]);
 
-  console.log(comparePlanData);
-
   return (
     <Layout.Page
       backTo={"/"}

@@ -5,10 +5,12 @@ const initialState = {
     shop: new Date("2021-10-07T00:00:00"),
     plan: new Date("2021-10-07T00:00:00"),
   },
+  shops: {},
 };
 
 const SET_DATA = "dashboard/SET_DATA";
 const SET_DATE = "dashboard/SET_DATE";
+const SET_SHOPS_DATA = "dashboard/SET_SHOPS_DATA";
 const SET_SHOP_DATA = "dashboard/SET_SHOP_DATA";
 const SET_PLAN_DATA = "dashboard/SET_PLAN_DATA";
 const SET_COMPARE_PLAN_DATA = "dashboard/SET_COMPARE_PLAN_DATA";
@@ -30,10 +32,20 @@ const dashboardReducer = (state = initialState, action) => {
         },
       };
 
-    case SET_SHOP_DATA: {
+    case SET_SHOPS_DATA: {
       return {
         ...state,
         shopData: action.data,
+      };
+    }
+
+    case SET_SHOP_DATA: {
+      return {
+        ...state,
+        shops: {
+          ...state.shops,
+          [action.id]: action.data,
+        },
       };
     }
 
@@ -59,8 +71,10 @@ const dashboardReducer = (state = initialState, action) => {
 
 export const loadData = () => async (dispatch) => dispatch({ type: SET_DATA, data: await dataApi.fetchData() });
 
-export const loadShopData = (date) => async (dispatch) =>
-  dispatch({ type: SET_SHOP_DATA, data: await dataApi.fetchShopData(date) });
+export const loadShopsData = (date) => async (dispatch) =>
+  dispatch({ type: SET_SHOPS_DATA, data: await dataApi.fetchShopsData(date) });
+export const loadShopData = (date, id) => async (dispatch) =>
+  dispatch({ type: SET_SHOP_DATA, id, data: await dataApi.fetchShopData(date, id) });
 export const loadPlanData = (date) => async (dispatch) =>
   dispatch({ type: SET_PLAN_DATA, data: await dataApi.fetchPlanData(date) });
 export const loadComparePlanData = (dateSrc, dateDst) => async (dispatch) =>
